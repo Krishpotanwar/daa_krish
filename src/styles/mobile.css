@@ -1,0 +1,97 @@
+/**
+ * Mobile-Specific CSS Optimizations
+ * Add to your global CSS or index.css
+ */
+
+/* Prevent text selection on mobile during drag/pan */
+.leaflet-container {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Improve touch targets for mobile */
+.glass-panel button,
+.glass-panel a {
+  min-height: 44px; /* iOS minimum touch target */
+  min-width: 44px;
+}
+
+/* Optimize map controls for mobile */
+@media (max-width: 768px) {
+  /* Make map controls larger on mobile */
+  .map-controls button {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  /* Adjust navigation controls for mobile */
+  .navigation-controls {
+    bottom: 80px !important; /* Account for mobile browser UI */
+  }
+
+  /* Make sidebar scrollable on mobile */
+  aside {
+    max-height: 50vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Optimize lung health card for mobile */
+  .lung-health-card {
+    font-size: 0.9rem;
+  }
+
+  /* Adjust live stats panel for mobile */
+  .live-stats-panel {
+    font-size: 0.85rem;
+  }
+}
+
+/* Prevent zoom on input focus (iOS) */
+input,
+select,
+textarea {
+  font-size: 16px !important; /* Prevents iOS zoom */
+}
+
+/* Smooth scrolling for mobile */
+* {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Safe area insets for notched devices */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
+  }
+}
+
+/* Optimize for landscape mode on mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+  aside {
+    max-height: 40vh;
+  }
+
+  .map-container {
+    height: 60vh;
+  }
+}
+
+/* PWA splash screen optimization */
+@media (display-mode: standalone) {
+  body {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
+/* Haptic feedback for buttons (visual) */
+@media (hover: none) and (pointer: coarse) {
+  button:active {
+    transform: scale(0.95);
+    transition: transform 0.1s;
+  }
+}
