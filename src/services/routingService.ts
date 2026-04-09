@@ -2,7 +2,6 @@ import { LatLngExpression } from 'leaflet';
 import { RouteData } from '@/data/routeData';
 import { getRoutePollutionScore } from './pollutionService';
 import { lungHealthScoringService } from './lungHealthScoringService';
-import { dijkstra, DELHI_GRAPH, reconstructPath } from '@/algorithms/shortestPath';
 
 interface OSRMResponse {
     routes: {
@@ -219,40 +218,43 @@ export const getRoutes = async (
         }
 
         // ---------------------------------------------------------------
-        // Dijkstra route on AQI-weighted Delhi graph (Unit III)
+        // Dijkstra route via Python API (Unit III — DAA)
         // ---------------------------------------------------------------
-        const dijkstraResult = dijkstra(DELHI_GRAPH, 'Connaught Place');
-        const dijkstraPath = reconstructPath(dijkstraResult.predecessors, 'India Gate');
-        const dijkstraDistance = dijkstraResult.distances['India Gate'];
+        let dijkstraRoute: RouteData | null = null;
+        try {
+            const pyRes = await fetch('/api/dijkstra', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ source: 'Connaught Place', destination: 'India Gate' })
+            });
+            if (pyRes.ok) {
+                const pyData = await pyRes.json();
+                const dijkstraCoords: LatLngExpression[] = (pyData.coordinates ?? []).map(
+                    (c: { lat: number; lon: number }) => [c.lat, c.lon] as [number, number]
+                );
+                dijkstraRoute = {
+                    id: `dijkstra-aqi-${Date.now()}`,
+                    name: 'Cleanest Air Path',
+                    algorithm: "Dijkstra's Algorithm (AQI-weighted, Python)",
+                    duration: `${Math.round(pyData.distance * 12)} min`,
+                    distance: `${(pyData.distance as number).toFixed(1)} km`,
+                    pollutionScore: Math.round(pyData.distance * 14),
+                    inhaledDose: Math.round(pyData.distance * 30),
+                    color: '#22c55e',
+                    visible: true,
+                    isRecommended: true,
+                    coordinates: dijkstraCoords,
+                };
+            }
+        } catch {
+            // Python API unavailable — skip Dijkstra route
+        }
 
-        const nodeCoords: Record<string, [number, number]> = {
-            'Connaught Place': [28.6315, 77.2167],
-            'Rajiv Chowk':     [28.6328, 77.2197],
-            'India Gate':      [28.6129, 77.2295],
-            'Karol Bagh':      [28.6517, 77.1902],
-            'Lodhi Colony':    [28.5921, 77.2238],
-            'Pragati Maidan':  [28.6133, 77.2429],
-            'Patel Nagar':     [28.6531, 77.1726],
-        };
-        const dijkstraCoords: LatLngExpression[] = dijkstraPath
-            .filter(n => nodeCoords[n])
-            .map(n => nodeCoords[n]);
-
-        const dijkstraRoute: RouteData = {
-            id: `dijkstra-aqi-${Date.now()}`,
-            name: 'Cleanest Air Path',
-            algorithm: "Dijkstra's Algorithm (AQI-weighted)",
-            duration: `${Math.round(dijkstraDistance * 12)} min`,
-            distance: `${dijkstraDistance.toFixed(1)} km`,
-            pollutionScore: Math.round(dijkstraDistance * 14),
-            inhaledDose: Math.round(dijkstraDistance * 30),
-            color: '#22c55e',
-            visible: true,
-            isRecommended: true,
-            coordinates: dijkstraCoords,
-        };
-
-        const allRoutes = [...pythonRoutes, ...tomTomRoutes, dijkstraRoute];
+        const allRoutes = [
+            ...pythonRoutes,
+            ...tomTomRoutes,
+            ...(dijkstraRoute ? [dijkstraRoute] : [])
+        ];
         return allRoutes;
 
     } catch (error) {
