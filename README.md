@@ -5,15 +5,17 @@
 
 BreatheWay is an intelligent, health-focused route navigation app that prioritises air quality over speed — designed for pedestrians and cyclists who want to minimise respiratory health risks in polluted urban areas.
 
+**Live Demo:** https://daakrish.vercel.app
+
 ---
 
 ## Team Members
 
-| Name | Roll No | Role |
-|------|---------|------|
-| Krish Potanwar | C1_A1_14 | Primary Developer — routing logic, Dijkstra integration, backend services |
-| Mohisha Punwatkar | C1_A1_13 | Creative Frontend Design — UI/UX, Algorithm Info Page |
-| Dhanashree Sainis | C1_A1_05 | Contributing in Both — Bellman-Ford, Closest Pair, Greedy Routing |
+| Name | Roll No | GitHub | Role |
+|------|---------|--------|------|
+| Krish Potanwar | C1_A1_14 | [@Krishpotanwar](https://github.com/Krishpotanwar) | Primary Developer — routing logic, Dijkstra integration, backend services |
+| Mohisha Punwatkar | C1_A1_13 | <!-- add your GitHub link here --> | Creative Frontend Design — UI/UX, Algorithm Info Page |
+| Dhanashree Sainis | C1_A1_05 | <!-- add your GitHub link here --> | Contributing in Both — Bellman-Ford, Closest Pair, Greedy Routing |
 
 ---
 
