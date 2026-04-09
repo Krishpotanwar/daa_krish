@@ -14,7 +14,7 @@ BreatheWay is an intelligent, health-focused route navigation app that prioritis
 | Name | Roll No | GitHub | Role |
 |------|---------|--------|------|
 | Krish Potanwar | C1_A1_14 | [@Krishpotanwar](https://github.com/Krishpotanwar) | Primary Developer — routing logic, Dijkstra integration, backend services |
-| Mohisha Punwatkar | C1_A1_13 | <!-- add your GitHub link here --> | Creative Frontend Design — UI/UX, Algorithm Info Page |
+| Mohisha Punwatkar | C1_A1_13 | https://github.com/mohisha01 | Creative Frontend Design — UI/UX, Algorithm Info Page |
 | Dhanashree Sainis | C1_A1_05 | <!-- add your GitHub link here --> | Contributing in Both — Bellman-Ford, Closest Pair, Greedy Routing |
 
 ---
