@@ -5,23 +5,63 @@ export interface PollutionData {
     o3: number;
 }
 
-export const getPollutionData = async (lat: number, lon: number): Promise<PollutionData | null> => {
+interface PollutionApiPayload {
+    aqi?: number;
+    pm25?: number;
+    pm2_5?: number;
+    no2?: number;
+    o3?: number;
+    current?: {
+        us_aqi?: number;
+        pm2_5?: number;
+        nitrogen_dioxide?: number;
+        ozone?: number;
+    };
+}
+
+const DEFAULT_POLLUTION: PollutionData = {
+    aqi: 50,
+    pm2_5: 15,
+    no2: 10,
+    o3: 20,
+};
+
+const toPollutionData = (payload: PollutionApiPayload): PollutionData => ({
+    aqi: payload?.aqi ?? payload?.current?.us_aqi ?? DEFAULT_POLLUTION.aqi,
+    pm2_5: payload?.pm25 ?? payload?.pm2_5 ?? payload?.current?.pm2_5 ?? DEFAULT_POLLUTION.pm2_5,
+    no2: payload?.no2 ?? payload?.current?.nitrogen_dioxide ?? DEFAULT_POLLUTION.no2,
+    o3: payload?.o3 ?? payload?.current?.ozone ?? DEFAULT_POLLUTION.o3,
+});
+
+const fetchJson = async (url: string): Promise<PollutionApiPayload | null> => {
     try {
-        // Python backend proxy — uses WAQI (real sensor data) with Open-Meteo fallback.
-        // API key stays server-side; browser never sees WAQI_TOKEN.
-        const res = await fetch(`/api/pollution?lat=${lat}&lon=${lon}`);
-        if (!res.ok) return null;
-        const d = await res.json();
-        return {
-            aqi:   d.aqi   ?? 50,
-            pm2_5: d.pm25  ?? 15,
-            no2:   d.no2   ?? 10,
-            o3:    d.o3    ?? 20,
-        };
+        const res = await fetch(url);
+        const contentType = res.headers.get('content-type') || '';
+        if (!res.ok || !contentType.includes('application/json')) {
+            return null;
+        }
+        return await res.json() as PollutionApiPayload;
     } catch (error) {
-        console.warn('Error fetching pollution data:', error);
+        console.warn('Pollution request failed:', error);
         return null;
     }
+};
+
+export const getPollutionData = async (lat: number, lon: number): Promise<PollutionData | null> => {
+    const proxiedPayload = await fetchJson(`/api/pollution?lat=${lat}&lon=${lon}`);
+    if (proxiedPayload) {
+        return toPollutionData(proxiedPayload);
+    }
+
+    const params = new URLSearchParams({
+        latitude: String(lat),
+        longitude: String(lon),
+        current: 'us_aqi,pm2_5,nitrogen_dioxide,ozone',
+        timezone: 'auto',
+    });
+
+    const directPayload = await fetchJson(`https://air-quality-api.open-meteo.com/v1/air-quality?${params.toString()}`);
+    return directPayload ? toPollutionData(directPayload) : DEFAULT_POLLUTION;
 };
 
 // Helper to batch fetch or average pollution for a route
@@ -53,7 +93,7 @@ export const getRoutePollutionScore = async (points: [number, number][]): Promis
         }
     }
 
-    if (count === 0) return { aqi: 50, pm2_5: 15, no2: 10, o3: 20 }; // Fallback defaults
+    if (count === 0) return DEFAULT_POLLUTION;
 
     return {
         aqi: Math.round(totalAqi / count),
@@ -92,4 +132,3 @@ export const generatePollutionZones = async (center: { lat: number, lon: number 
 
     return zones;
 };
-

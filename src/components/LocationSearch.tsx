@@ -1,7 +1,7 @@
 import { Search, MapPin, Navigation2, Crosshair, Loader2 } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
-import { getSuggestions, GeocodeResult, searchLocation } from '@/services/geocodingService';
+import { getSuggestions, GeocodeResult } from '@/services/geocodingService';
 
 interface LocationSearchProps {
   onSearch: (from: string, to: string) => void;
@@ -95,15 +95,15 @@ const SearchInput = ({ icon, value, onChange, placeholder, className, onSelect, 
       {rightElement}
 
       {showSuggestions && suggestions.length > 0 && (
-        <div className="relative z-50 w-full mt-1 bg-white dark:bg-zinc-900 rounded-xl shadow-lg border border-border overflow-hidden max-h-60 overflow-y-auto">
+        <div className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-50 overflow-hidden rounded-2xl border border-white/10 bg-zinc-950/95 text-foreground shadow-2xl backdrop-blur-xl">
           {suggestions.map((suggestion, index) => (
             <button
               key={index}
               onClick={() => handleSelect(suggestion)}
-              className="w-full text-left px-4 py-3 text-sm hover:bg-muted/50 transition-colors border-b border-border/50 last:border-0 flex items-start gap-3"
+              className="flex w-full items-start gap-3 border-b border-white/5 px-4 py-3 text-left text-sm text-foreground transition-colors hover:bg-white/5 last:border-0"
             >
               <MapPin className="w-4 h-4 mt-0.5 text-muted-foreground shrink-0" />
-              <span className="line-clamp-2">{suggestion.display_name}</span>
+              <span className="line-clamp-2 text-foreground/90">{suggestion.display_name}</span>
             </button>
           ))}
         </div>
@@ -111,16 +111,6 @@ const SearchInput = ({ icon, value, onChange, placeholder, className, onSelect, 
     </div>
   );
 };
-
-interface LocationSearchProps {
-  onSearch: (from: string, to: string) => void;
-  onUseCurrentLocation?: () => void;
-  isDetectingLocation?: boolean;
-  startName?: string;
-  endName?: string;
-}
-
-// ... SearchInput definition remains same ...
 
 const LocationSearch = ({
   onSearch,
@@ -152,6 +142,7 @@ const LocationSearch = ({
         value={from}
         onChange={setFrom}
         placeholder="Starting point"
+        className="pr-14"
         rightElement={
           <button
             onClick={onUseCurrentLocation}
@@ -185,7 +176,7 @@ const LocationSearch = ({
         value={to}
         onChange={setTo}
         placeholder="Destination"
-        className="pr-4"
+        className="pr-6"
       />
 
       {/* Search Button */}

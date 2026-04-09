@@ -1,0 +1,243 @@
+{
+  "version": 1,
+  "updatedAt": 1775722636120,
+  "nodeCount": 20,
+  "nodes": {
+    "mem-MEMORY-memory-index": {
+      "id": "mem-MEMORY-memory-index",
+      "category": "core",
+      "confidence": 0.53,
+      "accessCount": 1,
+      "createdAt": 1775719863732
+    },
+    "mem-feedback_disasterman_logging----": {
+      "id": "mem-feedback_disasterman_logging----",
+      "category": "feedback_disasterman_logging",
+      "confidence": 0.5,
+      "accessCount": 0,
+      "createdAt": 1775719863730
+    },
+    "mem-feedback_vite_not_nextjs----": {
+      "id": "mem-feedback_vite_not_nextjs----",
+      "category": "feedback_vite_not_nextjs",
+      "confidence": 0.5,
+      "accessCount": 0,
+      "createdAt": 1775719863731
+    },
+    "mem-project_slayers----": {
+      "id": "mem-project_slayers----",
+      "category": "project_slayers",
+      "confidence": 0.5,
+      "accessCount": 0,
+      "createdAt": 1775719863731
+    },
+    "mem-project_slayers-aryan331277-slayers---worldsim": {
+      "id": "mem-project_slayers-aryan331277-slayers---worldsim",
+      "category": "project_slayers",
+      "confidence": 0.5,
+      "accessCount": 0,
+      "createdAt": 1775719863731
+    },
+    "mem-project_slayers-what-the-project-is": {
+      "id": "mem-project_slayers-what-the-project-is",
+      "category": "project_slayers",
+      "confidence": 0.5,
+      "accessCount": 0,
+      "createdAt": 1775719863731
+    },
+    "mem-project_slayers-commit-history--35-commits--al": {
+      "id": "mem-project_slayers-commit-history--35-commits--al",
+      "category": "project_slayers",
+      "confidence": 0.5,
+      "accessCount": 0,
+      "createdAt": 1775719863731
+    },
+    "mem-project_slayers-critical-bugs": {
+      "id": "mem-project_slayers-critical-bugs",
+      "category": "project_slayers",
+      "confidence": 0.6000000000000001,
+      "accessCount": 2,
+      "createdAt": 1775719863731
+    },
+    "mem-project_slayers-architecture-issues--fundament": {
+      "id": "mem-project_slayers-architecture-issues--fundament",
+      "category": "project_slayers",
+      "confidence": 0.6000000000000001,
+      "accessCount": 2,
+      "createdAt": 1775719863731
+    },
+    "mem-project_upay----": {
+      "id": "mem-project_upay----",
+      "category": "project_upay",
+      "confidence": 0.6300000000000001,
+      "accessCount": 3,
+      "createdAt": 1775719863731
+    },
+    "mem-project_upay-what-it-is": {
+      "id": "mem-project_upay-what-it-is",
+      "category": "project_upay",
+      "confidence": 0.5,
+      "accessCount": 0,
+      "createdAt": 1775719863731
+    },
+    "mem-project_upay-active-repo": {
+      "id": "mem-project_upay-active-repo",
+      "category": "project_upay",
+      "confidence": 0.5,
+      "accessCount": 0,
+      "createdAt": 1775719863731
+    },
+    "mem-project_upay-stack": {
+      "id": "mem-project_upay-stack",
+      "category": "project_upay",
+      "confidence": 0.5,
+      "accessCount": 0,
+      "createdAt": 1775719863731
+    },
+    "mem-project_upay-task-completion--as-of-2026-04": {
+      "id": "mem-project_upay-task-completion--as-of-2026-04",
+      "category": "project_upay",
+      "confidence": 0.5,
+      "accessCount": 0,
+      "createdAt": 1775719863731
+    },
+    "mem-project_upay-key-architecture-decisions": {
+      "id": "mem-project_upay-key-architecture-decisions",
+      "category": "project_upay",
+      "confidence": 0.6300000000000001,
+      "accessCount": 3,
+      "createdAt": 1775719863731
+    },
+    "mem-project_upay-ngo-analytics-best-practices--": {
+      "id": "mem-project_upay-ngo-analytics-best-practices--",
+      "category": "project_upay",
+      "confidence": 0.6000000000000001,
+      "accessCount": 2,
+      "createdAt": 1775719863731
+    },
+    "mem-project_upay-build-status": {
+      "id": "mem-project_upay-build-status",
+      "category": "project_upay",
+      "confidence": 0.5,
+      "accessCount": 0,
+      "createdAt": 1775719863731
+    },
+    "mem-project_smartroadhazard----": {
+      "id": "mem-project_smartroadhazard----",
+      "category": "project_smartroadhazard",
+      "confidence": 0.5,
+      "accessCount": 0,
+      "createdAt": 1775719863732
+    },
+    "mem-user_krish----": {
+      "id": "mem-user_krish----",
+      "category": "user_krish",
+      "confidence": 0.5,
+      "accessCount": 0,
+      "createdAt": 1775719863732
+    },
+    "insight-1775722168426-kdvr": {
+      "id": "insight-1775722168426-kdvr",
+      "category": "insights",
+      "confidence": 0.5,
+      "accessCount": 0,
+      "createdAt": 1775722168426
+    }
+  },
+  "edges": [
+    {
+      "sourceId": "mem-project_slayers----",
+      "targetId": "mem-project_slayers-aryan331277-slayers---worldsim",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-project_slayers-aryan331277-slayers---worldsim",
+      "targetId": "mem-project_slayers-what-the-project-is",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-project_slayers-what-the-project-is",
+      "targetId": "mem-project_slayers-commit-history--35-commits--al",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-project_slayers-commit-history--35-commits--al",
+      "targetId": "mem-project_slayers-critical-bugs",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-project_slayers-critical-bugs",
+      "targetId": "mem-project_slayers-architecture-issues--fundament",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-project_upay----",
+      "targetId": "mem-project_upay-what-it-is",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-project_upay-what-it-is",
+      "targetId": "mem-project_upay-active-repo",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-project_upay-active-repo",
+      "targetId": "mem-project_upay-stack",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-project_upay-stack",
+      "targetId": "mem-project_upay-task-completion--as-of-2026-04",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-project_upay-task-completion--as-of-2026-04",
+      "targetId": "mem-project_upay-key-architecture-decisions",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-project_upay-key-architecture-decisions",
+      "targetId": "mem-project_upay-ngo-analytics-best-practices--",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-project_upay-ngo-analytics-best-practices--",
+      "targetId": "mem-project_upay-build-status",
+      "type": "temporal",
+      "weight": 0.5
+    }
+  ],
+  "pageRanks": {
+    "mem-MEMORY-memory-index": 0.020695487831706407,
+    "mem-feedback_disasterman_logging----": 0.020695487831706407,
+    "mem-feedback_vite_not_nextjs----": 0.020695487831706407,
+    "mem-project_slayers----": 0.020695487831706407,
+    "mem-project_slayers-aryan331277-slayers---worldsim": 0.03828664637135627,
+    "mem-project_slayers-what-the-project-is": 0.05323911402419248,
+    "mem-project_slayers-commit-history--35-commits--al": 0.06594869385573808,
+    "mem-project_slayers-critical-bugs": 0.07675183978083702,
+    "mem-project_slayers-architecture-issues--fundament": 0.08593454524229245,
+    "mem-project_upay----": 0.020695487831706407,
+    "mem-project_upay-what-it-is": 0.03828664637135627,
+    "mem-project_upay-active-repo": 0.05323911402419248,
+    "mem-project_upay-stack": 0.06594869385573808,
+    "mem-project_upay-task-completion--as-of-2026-04": 0.07675183978083702,
+    "mem-project_upay-key-architecture-decisions": 0.08593454524229245,
+    "mem-project_upay-ngo-analytics-best-practices--": 0.09373991285271414,
+    "mem-project_upay-build-status": 0.10037450594480228,
+    "mem-project_smartroadhazard----": 0.020695487831706407,
+    "mem-user_krish----": 0.020695487831706407,
+    "insight-1775722168426-kdvr": 0.020695487831706407
+  }
+}

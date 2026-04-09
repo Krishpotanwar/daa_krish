@@ -1,0 +1,276 @@
+[
+  {
+    "id": "mem-MEMORY-memory-index",
+    "key": "memory-index",
+    "content": "- [aryan331277/slayers repo analysis](project_slayers.md) — WorldSim MAPPO hackathon project: full commit history, critical bugs, architecture issues, disconnect between ML backend and React frontend\n- [DisasterMan session logging requirement](feedback_disasterman_logging.md) — Always maintain copilottaskdone.md as a running log; never delete it; append after every fix/deploy\n- [UPAY NGO Platform — project state](project_upay.md) — All 5 tasks complete + analytics dashboard bonus; active repo at",
+    "summary": "Memory Index",
+    "namespace": "core",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/krish/.claude/projects/-Users-krish-Desktop-study-project/memory/MEMORY.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775719863730
+  },
+  {
+    "id": "mem-feedback_disasterman_logging----",
+    "key": "-",
+    "content": "name: DisasterMan session logging requirement\ndescription: User always wants copilottaskdone.md kept as a running session log — never remove it, always append after every fix/task\ntype: feedback\n---\n\nAlways maintain `/Users/krish/Desktop/study/project/disasterman/copilottaskdone.md` as a running human-readable log.\n\n**Why:** User explicitly said \"log everything even log that\" and \"even if everything is in git history I want the logs.\" The file was accidentally deleted from git tracking during cl",
+    "summary": "---",
+    "namespace": "feedback_disasterman_logging",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/krish/.claude/projects/-Users-krish-Desktop-study-project/memory/feedback_disasterman_logging.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775719863730
+  },
+  {
+    "id": "mem-feedback_vite_not_nextjs----",
+    "key": "-",
+    "content": "name: Ignore \"use client\" hook warnings in UPAY\ndescription: A PostToolUse hook fires \"use client\" suggestions on every edit in the UPAY project — these are false positives for a Vite project\ntype: feedback\n---\n\nAlways ignore the \"use client\" PostToolUse hook warnings in the UPAY / upay-trackly-isolated project.\n\n**Why:** The hook matches on React hooks usage and assumes Next.js App Router, but UPAY is a Vite 5 + React Router 6 SPA. `\"use client\"` is not a concept in this codebase. Applying thes",
+    "summary": "---",
+    "namespace": "feedback_vite_not_nextjs",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/krish/.claude/projects/-Users-krish-Desktop-study-project/memory/feedback_vite_not_nextjs.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775719863731
+  },
+  {
+    "id": "mem-project_slayers----",
+    "key": "-",
+    "content": "name: aryan331277/slayers repo analysis\ndescription: Thorough analysis of the WorldSim MAPPO hackathon project — tech stack, all 35 commits, critical bugs, code quality issues, architecture problems, and missing integrations\ntype: project\n---",
+    "summary": "---",
+    "namespace": "project_slayers",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/krish/.claude/projects/-Users-krish-Desktop-study-project/memory/project_slayers.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775719863731
+  },
+  {
+    "id": "mem-project_slayers-aryan331277-slayers---worldsim",
+    "key": "aryan331277-slayers-worldsim-mappo-climate-simulat",
+    "content": "**Repo:** https://github.com/aryan331277/slayers\n**Context:** Hackathon submission for SIT Novate 2.0 — built in ~23 hours (2026-02-26 to 2026-02-27)\n**Contributors:** aryan331277 (18 commits), atharv1909 (9 commits), bhalerao-aditya007 (8 commits)",
+    "summary": "aryan331277/slayers — WorldSim MAPPO Climate Simulator",
+    "namespace": "project_slayers",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/krish/.claude/projects/-Users-krish-Desktop-study-project/memory/project_slayers.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775719863731
+  },
+  {
+    "id": "mem-project_slayers-what-the-project-is",
+    "key": "what-the-project-is",
+    "content": "Multi-nation multi-agent climate resource simulator using MAPPO (Multi-Agent Proximal Policy Optimization). 10 real countries as RL agents managing water/food/energy through trade, conflict, and diplomacy.\n\n**Stack:**\n- Python ML: PettingZoo AEC env, PyTorch, MAPPO + MAML meta-learning, Kaggle notebooks\n- Frontend: React 19 + TypeScript + Vite 7 + Tailwind + shadcn/ui + GSAP + Recharts + D3\n- 3 separate React apps: `app/` (global), `full_app/` (duplicate), `worldsim_india_frontend/` (India-speci",
+    "summary": "What the project is",
+    "namespace": "project_slayers",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/krish/.claude/projects/-Users-krish-Desktop-study-project/memory/project_slayers.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775719863731
+  },
+  {
+    "id": "mem-project_slayers-commit-history--35-commits--al",
+    "key": "commit-history-35-commits-all-in-23-hours-",
+    "content": "- aryan: Initial commit → data pipeline scripts → climate_markov.py → mappo.py → MAPPO-MAML.py → frontend uploads\n- Atharv: README updates → n8n workflow file → frontend media uploads\n- Aditya: India_Data_Merger.py → India_Module.py → India module updates\n\nNotable commits:\n- `77945a23` \"Update print statement from 'Hello' to 'Goodbye'\" — meaningless debug commit\n- `673d03ca` \"Rename WhatsApp Image... to n8n-workflow\" — image file renamed as workflow JSON\n- Multiple \"Create 1.txt\" and \"Add files ",
+    "summary": "Commit History (35 commits, all in 23 hours)",
+    "namespace": "project_slayers",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/krish/.claude/projects/-Users-krish-Desktop-study-project/memory/project_slayers.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775719863731
+  },
+  {
+    "id": "mem-project_slayers-critical-bugs",
+    "key": "critical-bugs",
+    "content": "1. **Double `agent_selector.next()` in `petting_zoo.py`** — agents skipped, rewards read after reset. `mappo.py` documents the bug but original env file unfixed.\n2. **Commented-out env import in `India_Module.py`** — `N_ACTIONS` referenced but undefined, module can't run standalone.\n3. **`generateStrategy()` in `ScenarioInput.tsx` is fake** — pure keyword if/else with `setTimeout(resolve, 2000)` fake delay. Zero AI inference. No backend call.\n4. **`STATE_COLORS` referenced before definition in `",
+    "summary": "Critical Bugs",
+    "namespace": "project_slayers",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/krish/.claude/projects/-Users-krish-Desktop-study-project/memory/project_slayers.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775719863731
+  },
+  {
+    "id": "mem-project_slayers-architecture-issues--fundament",
+    "key": "architecture-issues-fundamental-",
+    "content": "**The Python ML backend and React frontend are completely disconnected.** There is no API server. The frontend makes zero network calls. It's a static mockup that simulates the appearance of AI inference.\n\n- `resourceHistory` data uses `Math.random()` — different values on every reload\n- Simulation loop only increments a counter and triggers random CSS effects\n- `currentCycle` resets to 47 (not 0) — demo starting point never cleaned up\n- Non-existent region IDs (iran, pakistan, israel, etc.) ref",
+    "summary": "Architecture Issues (Fundamental)",
+    "namespace": "project_slayers",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/krish/.claude/projects/-Users-krish-Desktop-study-project/memory/project_slayers.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775719863731
+  },
+  {
+    "id": "mem-project_upay----",
+    "key": "-",
+    "content": "name: UPAY NGO Platform — project state\ndescription: Full task completion status, repo location, stack, and architecture for the UPAY event management platform (fork of Trackly)\ntype: project\n---",
+    "summary": "---",
+    "namespace": "project_upay",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/krish/.claude/projects/-Users-krish-Desktop-study-project/memory/project_upay.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775719863731
+  },
+  {
+    "id": "mem-project_upay-what-it-is",
+    "key": "what-it-is",
+    "content": "UPAY is an NGO event management PWA — a rebrand + extension of https://github.com/Shlok-Dwivedi/Trackly. Built for UPAY NGO.",
+    "summary": "What it is",
+    "namespace": "project_upay",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/krish/.claude/projects/-Users-krish-Desktop-study-project/memory/project_upay.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775719863731
+  },
+  {
+    "id": "mem-project_upay-active-repo",
+    "key": "active-repo",
+    "content": "`/Users/krish/Desktop/study/project/upay-trackly-isolated`\n- Branch: `codex/import-claude-work`\n- GitHub: `git@github.com:Krishpotanwar/upay-trackly-isolated.git`\n- Upstream: `https://github.com/Shlok-Dwivedi/Trackly.git` (as `upstream` remote)\n\n**Why:** The original `/Users/krish/Desktop/study/project/UPAY/` was reset to upstream (Shlok-Dwivedi/Trackly) clean state. All UPAY work lives in `upay-trackly-isolated`.",
+    "summary": "Active repo",
+    "namespace": "project_upay",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/krish/.claude/projects/-Users-krish-Desktop-study-project/memory/project_upay.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775719863731
+  },
+  {
+    "id": "mem-project_upay-stack",
+    "key": "stack",
+    "content": "React 18 + TypeScript + Vite 5 (SWC), Tailwind CSS, shadcn/ui, Firebase Firestore (no Supabase for events), Flask backend, Capacitor for mobile.",
+    "summary": "Stack",
+    "namespace": "project_upay",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/krish/.claude/projects/-Users-krish-Desktop-study-project/memory/project_upay.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775719863731
+  },
+  {
+    "id": "mem-project_upay-task-completion--as-of-2026-04",
+    "key": "task-completion-as-of-2026-04-03-",
+    "content": "- TASK 0 — Rebrand Trackly → UPAY: ✅\n- TASK 1 — EventSummaryPanel slide-over drawer in Reports: ✅\n- TASK 2 — Committee Management (CommitteeManager, CommitteeSelect, src/lib/committees.ts, src/hooks/useCommittees.ts, integrated in Users.tsx): ✅\n- TASK 3 — Committee assignment in EventCreate + committee enrollment in EventDetail: ✅\n- TASK 4 — Seed script at backend/scripts/seed_events.py: ✅\n- TASK 5 — CSV Export (Export CSV button in Reports.tsx, downloadCSV() function): ✅\n- BONUS — Performance I",
+    "summary": "Task completion (as of 2026-04-03)",
+    "namespace": "project_upay",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/krish/.claude/projects/-Users-krish-Desktop-study-project/memory/project_upay.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775719863731
+  },
+  {
+    "id": "mem-project_upay-key-architecture-decisions",
+    "key": "key-architecture-decisions",
+    "content": "- Enrollment data is embedded in FirestoreEvent docs (`assignedTo[]`, `attendees[]`) — no separate collection\n- `attendees[].joinType` = `'assigned' | 'enrolled'` distinguishes staff-assigned vs self-enrolled\n- `attendees[].committeeId/committeeName` added during enrollment\n- Time is IST throughout — utility functions in `src/lib/utils.ts`: `toIST()`, `formatInIST()`, `nowInIST()`, `todayInIST()`\n- Reports uses `useEvents` hook (Firestore onSnapshot), not a one-time getDocs",
+    "summary": "Key architecture decisions",
+    "namespace": "project_upay",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/krish/.claude/projects/-Users-krish-Desktop-study-project/memory/project_upay.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775719863731
+  },
+  {
+    "id": "mem-project_upay-ngo-analytics-best-practices--",
+    "key": "ngo-analytics-best-practices-from-web-research-",
+    "content": "Key KPIs confirmed by industry: participation rate, completion rate, volunteer engagement rate, retention, recurring attendance %. CSV → Power BI via Blob download (max 30k rows). Heatmaps and time-series line charts are most effective for volunteer analytics.\n\n**Why:** Validates current implementation choices.",
+    "summary": "NGO analytics best practices (from web research)",
+    "namespace": "project_upay",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/krish/.claude/projects/-Users-krish-Desktop-study-project/memory/project_upay.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775719863731
+  },
+  {
+    "id": "mem-project_upay-build-status",
+    "key": "build-status",
+    "content": "`npm run build` passes with zero TypeScript errors. Only warning is chunk size (firebase vendor ~524KB) — acceptable.",
+    "summary": "Build status",
+    "namespace": "project_upay",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/krish/.claude/projects/-Users-krish-Desktop-study-project/memory/project_upay.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775719863731
+  },
+  {
+    "id": "mem-MEMORY-memory-index",
+    "key": "memory-index",
+    "content": "- [user_krish.md](user_krish.md) — Krish's profile: B.Tech CSE AI/ML student, Nagpur, intermediate level\n- [project_smartroadhazard.md](project_smartroadhazard.md) — SmartRoadHazard project status and architecture decisions",
+    "summary": "Memory Index",
+    "namespace": "core",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/krish/.claude/projects/-Users-krish-Desktop-study-project-SmartRoadHazard/memory/MEMORY.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775719863732
+  },
+  {
+    "id": "mem-project_smartroadhazard----",
+    "key": "-",
+    "content": "name: smartroadhazard_project\ndescription: SmartRoadHazard - IoT simulation college project, fully built on 2026-03-16\ntype: project\n---\n\nFull-stack IoT simulation project built 2026-03-16. Status: COMPLETE.\n\nAll 11 files created under /Users/krish/Desktop/study/project/SmartRoadHazard/\n\n**Why:** Graded college project for B.Tech CSE (AI & ML), Ramdeobaba University.\n\n**How to apply:** If resuming this project, read PROJECT_STATUS.md at .claude/sessions/PROJECT_STATUS.md. The only outstanding it",
+    "summary": "---",
+    "namespace": "project_smartroadhazard",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/krish/.claude/projects/-Users-krish-Desktop-study-project-SmartRoadHazard/memory/project_smartroadhazard.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775719863732
+  },
+  {
+    "id": "mem-user_krish----",
+    "key": "-",
+    "content": "name: user_krish_profile\ndescription: Krish Potanwar - B.Tech CSE (AI & ML) student at Ramdeobaba University, Nagpur\ntype: user\n---\n\n- B.Tech CSE (AI & ML), Ramdeobaba University, Nagpur\n- Intermediate level: understands Python, basic web dev, Arduino C++\n- Machine: MacOS (Apple Silicon or Intel)\n- Working on graded college projects that must be fully functional and demonstrable\n- Prefers detailed code comments so he can explain the code to professors",
+    "summary": "---",
+    "namespace": "user_krish",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/krish/.claude/projects/-Users-krish-Desktop-study-project-SmartRoadHazard/memory/user_krish.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775719863732
+  },
+  {
+    "id": "insight-1775722168426-kdvr",
+    "key": "frequent-edit-unknown",
+    "content": "File unknown was edited 40 times this session — likely a hot path worth monitoring.",
+    "summary": "Frequently edited: unknown (40x)",
+    "namespace": "insights",
+    "type": "procedural",
+    "metadata": {
+      "sourceFile": "unknown",
+      "editCount": 40,
+      "autoGenerated": true
+    },
+    "createdAt": 1775722168426
+  }
+]
