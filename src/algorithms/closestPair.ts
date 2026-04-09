@@ -192,7 +192,10 @@ export function closestPollutionStation(
 }
 
 // ---------------------------------------------------------------------------
-// Sample Delhi pollution monitoring stations (used by UI)
+// Sample pollution monitoring stations — used ONLY by the /algorithms UI page
+// for demonstrating the algorithm with concrete data.
+// In production, closestPollutionStation() receives dynamically fetched
+// stations for whatever city the user is routing through.
 // ---------------------------------------------------------------------------
 
 export const DELHI_STATIONS: PollutionStation[] = [

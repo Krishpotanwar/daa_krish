@@ -1,5 +1,3 @@
-import { closestPollutionStation, DELHI_STATIONS } from '@/algorithms/closestPair';
-
 export interface PollutionData {
     aqi: number;
     pm2_5: number;
@@ -38,19 +36,13 @@ export const getRoutePollutionScore = async (points: [number, number][]): Promis
     // Strategy: Take the start, middle, and end points to get an average representation
     if (points.length === 0) return { aqi: 0, pm2_5: 0, no2: 0, o3: 0 };
 
-    const rawSamplePoints = [
+    // Sample start, mid, end of the route.
+    // Open-Meteo works for any location globally — no snapping needed.
+    const samplePoints = [
         points[0],
         points[Math.floor(points.length / 2)],
         points[points.length - 1]
     ];
-
-    // Use closestPollutionStation (Closest Pair D&C, Unit IV) to snap each
-    // sample point to the nearest real CPCB monitoring station before
-    // querying the AQI API — this avoids fetching arbitrary ocean/park coords.
-    const samplePoints = rawSamplePoints.map(([lat, lon]) => {
-        const nearest = closestPollutionStation({ lat, lon }, DELHI_STATIONS);
-        return [nearest.y, nearest.x] as [number, number];
-    });
 
     let totalAqi = 0;
     let totalPm25 = 0;

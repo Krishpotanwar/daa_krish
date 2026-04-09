@@ -2,7 +2,8 @@ import { LatLngExpression } from 'leaflet';
 import { RouteData } from '@/data/routeData';
 import { getRoutePollutionScore } from './pollutionService';
 import { lungHealthScoringService } from './lungHealthScoringService';
-import { dijkstra, DELHI_GRAPH, reconstructPath } from '@/algorithms/shortestPath';
+import { dijkstra, reconstructPath, buildGraphFromPoints, haversineKm, GeoNode } from '@/algorithms/shortestPath';
+import { getPollutionData } from './pollutionService';
 
 interface OSRMResponse {
     routes: {
@@ -219,44 +220,83 @@ export const getRoutes = async (
         }
 
         // ---------------------------------------------------------------
-        // Dijkstra route on AQI-weighted Delhi graph
-        // Finds the lowest-pollution path using Unit III shortest-path algo.
+        // Dijkstra on a DYNAMIC AQI-weighted graph — works for any city
+        //
+        // 1. Interpolate 6 waypoints between user's actual start & end coords
+        // 2. Add 2 perpendicular "detour" nodes at mid-route for branching
+        // 3. Fetch live AQI from Open-Meteo for each node (global coverage)
+        // 4. Build graph: edge weight = haversine_km + AQI_penalty
+        // 5. Run Dijkstra → picks the minimum pollution-cost path
         // ---------------------------------------------------------------
-        const dijkstraResult = dijkstra(DELHI_GRAPH, 'Connaught Place');
-        const dijkstraPath = reconstructPath(dijkstraResult.predecessors, 'India Gate');
-        const dijkstraDistance = dijkstraResult.distances['India Gate'];
+        let dijkstraRoute: RouteData | null = null;
+        try {
+            const NUM_MAIN = 6;
+            const rawNodes: { id: string; lat: number; lon: number }[] = [];
 
-        // Map named nodes to approximate LatLng for display on Leaflet map
-        const nodeCoords: Record<string, [number, number]> = {
-            'Connaught Place': [28.6315, 77.2167],
-            'Rajiv Chowk':     [28.6328, 77.2197],
-            'India Gate':      [28.6129, 77.2295],
-            'Karol Bagh':      [28.6517, 77.1902],
-            'Lodhi Colony':    [28.5921, 77.2238],
-            'Pragati Maidan':  [28.6133, 77.2429],
-            'Patel Nagar':     [28.6531, 77.1726],
-        };
-        const dijkstraCoords: LatLngExpression[] = dijkstraPath
-            .filter(n => nodeCoords[n])
-            .map(n => nodeCoords[n]);
+            // Linearly interpolated nodes along the route
+            for (let i = 0; i < NUM_MAIN; i++) {
+                const t = i / (NUM_MAIN - 1);
+                rawNodes.push({
+                    id: i === 0 ? 'source' : i === NUM_MAIN - 1 ? 'destination' : `node_${i}`,
+                    lat: start.lat + t * (end.lat - start.lat),
+                    lon: start.lon + t * (end.lon - start.lon),
+                });
+            }
 
-        const dijkstraRoute: RouteData = {
-            id: `dijkstra-aqi-${Date.now()}`,
-            name: 'Cleanest Air Path',
-            algorithm: "Dijkstra's Algorithm (AQI-weighted)",
-            duration: `${Math.round(dijkstraDistance * 12)} min`,
-            distance: `${dijkstraDistance.toFixed(1)} km`,
-            pollutionScore: Math.round(dijkstraDistance * 14),
-            inhaledDose: Math.round(dijkstraDistance * 30),
-            color: '#22c55e',
-            visible: true,
-            isRecommended: true,
-            coordinates: dijkstraCoords,
-        };
+            // Perpendicular detour nodes — give the graph real branching alternatives
+            const perpLat = (end.lon - start.lon) * 0.008;
+            const perpLon = -(end.lat - start.lat) * 0.008;
+            const midLat = (start.lat + end.lat) / 2;
+            const midLon = (start.lon + end.lon) / 2;
+            rawNodes.push({ id: 'detour_a', lat: midLat + perpLat, lon: midLon + perpLon });
+            rawNodes.push({ id: 'detour_b', lat: midLat - perpLat, lon: midLon - perpLon });
 
-        const allRoutes = [...pythonRoutes, ...tomTomRoutes, dijkstraRoute];
+            // Fetch live AQI for all nodes in parallel (Open-Meteo — global)
+            const aqiResults = await Promise.all(
+                rawNodes.map(n => getPollutionData(n.lat, n.lon))
+            );
 
-        return allRoutes.map(r => r);
+            const geoNodes: GeoNode[] = rawNodes.map((n, i) => ({
+                ...n,
+                aqi: aqiResults[i]?.aqi ?? 50,
+            }));
+
+            // Build dynamic graph and run Dijkstra
+            const totalDist = haversineKm(start.lat, start.lon, end.lat, end.lon);
+            const graph = buildGraphFromPoints(geoNodes, totalDist * 1.5);
+            const result = dijkstra(graph, 'source');
+            const path = reconstructPath(result.predecessors, 'destination');
+
+            if (path.length >= 2 && result.distances['destination'] !== Infinity) {
+                const pathCoords: LatLngExpression[] = path
+                    .map(id => geoNodes.find(n => n.id === id))
+                    .filter(Boolean)
+                    .map(n => [n!.lat, n!.lon]);
+
+                const avgAqi = geoNodes.reduce((s, n) => s + n.aqi, 0) / geoNodes.length;
+
+                dijkstraRoute = {
+                    id: `dijkstra-dynamic-${Date.now()}`,
+                    name: 'Cleanest Air Path',
+                    algorithm: "Dijkstra's Algorithm (AQI-weighted)",
+                    duration: `${Math.round(totalDist * 12)} min`,
+                    distance: `${totalDist.toFixed(1)} km`,
+                    pollutionScore: Math.round(avgAqi * 0.8),
+                    inhaledDose: Math.round(totalDist * 30),
+                    color: '#22c55e',
+                    visible: true,
+                    isRecommended: true,
+                    coordinates: pathCoords,
+                };
+            }
+        } catch (dijkstraErr) {
+            console.warn('Dynamic Dijkstra failed, skipping:', dijkstraErr);
+        }
+
+        const allRoutes = [...pythonRoutes, ...tomTomRoutes];
+        if (dijkstraRoute) allRoutes.push(dijkstraRoute);
+
+        return allRoutes;
 
     } catch (error) {
         console.error('Error fetching routes:', error);

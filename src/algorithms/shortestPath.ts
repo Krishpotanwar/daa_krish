@@ -8,10 +8,10 @@
  * running in O(VE).
  *
  * Real-world use in BreatheWay:
- * Nodes are Delhi city locations. Edge weights are a combined score of
- * (physical distance + AQI penalty). Dijkstra finds the "cleanest" route
- * by minimising total pollution-weighted travel cost. Bellman-Ford is
- * offered as a safer fallback that also detects negative-cost cycles.
+ * Given any two GPS coordinates on Earth, BreatheWay samples real-time AQI
+ * data along the route, builds a dynamic weighted graph, and runs Dijkstra
+ * to find the path that minimises total pollution exposure.
+ * Works for any city/location — not hardcoded to any region.
  */
 
 export const DIJKSTRA_COMPLEXITY = 'O((V + E) log V)';
@@ -240,4 +240,62 @@ export function reconstructPath(predecessors: { [node: string]: string | null },
     current = predecessors[current] ?? null;
   }
   return path;
+}
+
+// ---------------------------------------------------------------------------
+// Dynamic graph builder — works for ANY location on Earth
+// ---------------------------------------------------------------------------
+
+/**
+ * Haversine distance between two GPS coordinates, in kilometres.
+ * Used as the base distance component of AQI-weighted edge weights.
+ */
+export function haversineKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 6371;
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+export interface GeoNode {
+  id: string;
+  lat: number;
+  lon: number;
+  /** Real-time AQI fetched from Open-Meteo for this location */
+  aqi: number;
+}
+
+/**
+ * Build an AQI-weighted graph from any set of geo-located nodes.
+ *
+ * Edge weight = haversine_distance_km + (avg_AQI_of_endpoints / 100)
+ * This penalises polluted corridors regardless of city or country.
+ * Nodes are connected if they are within maxConnectKm of each other.
+ *
+ * @param nodes       Geo-nodes with real-time AQI values
+ * @param maxConnectKm  Maximum distance for two nodes to be connected
+ */
+export function buildGraphFromPoints(nodes: GeoNode[], maxConnectKm = 50): Graph {
+  const graph: Graph = {};
+  for (const node of nodes) {
+    graph[node.id] = [];
+  }
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const a = nodes[i];
+      const b = nodes[j];
+      const dist = haversineKm(a.lat, a.lon, b.lat, b.lon);
+      if (dist <= maxConnectKm) {
+        const weight = dist + (a.aqi + b.aqi) / 200;
+        graph[a.id].push({ to: b.id, weight });
+        graph[b.id].push({ to: a.id, weight });
+      }
+    }
+  }
+  return graph;
 }
