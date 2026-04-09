@@ -2,6 +2,7 @@ import { LatLngExpression } from 'leaflet';
 import { RouteData } from '@/data/routeData';
 import { getRoutePollutionScore } from './pollutionService';
 import { lungHealthScoringService } from './lungHealthScoringService';
+import { dijkstra, DELHI_GRAPH, reconstructPath } from '@/algorithms/shortestPath';
 
 interface OSRMResponse {
     routes: {
@@ -217,12 +218,45 @@ export const getRoutes = async (
             }
         }
 
-        const allRoutes = [...pythonRoutes, ...tomTomRoutes];
+        // ---------------------------------------------------------------
+        // Dijkstra route on AQI-weighted Delhi graph
+        // Finds the lowest-pollution path using Unit III shortest-path algo.
+        // ---------------------------------------------------------------
+        const dijkstraResult = dijkstra(DELHI_GRAPH, 'Connaught Place');
+        const dijkstraPath = reconstructPath(dijkstraResult.predecessors, 'India Gate');
+        const dijkstraDistance = dijkstraResult.distances['India Gate'];
 
-        return allRoutes.map(r => {
-            // Re-verify recommendation logic if needed, otherwise keep Python's recommendation
-            return r;
-        });
+        // Map named nodes to approximate LatLng for display on Leaflet map
+        const nodeCoords: Record<string, [number, number]> = {
+            'Connaught Place': [28.6315, 77.2167],
+            'Rajiv Chowk':     [28.6328, 77.2197],
+            'India Gate':      [28.6129, 77.2295],
+            'Karol Bagh':      [28.6517, 77.1902],
+            'Lodhi Colony':    [28.5921, 77.2238],
+            'Pragati Maidan':  [28.6133, 77.2429],
+            'Patel Nagar':     [28.6531, 77.1726],
+        };
+        const dijkstraCoords: LatLngExpression[] = dijkstraPath
+            .filter(n => nodeCoords[n])
+            .map(n => nodeCoords[n]);
+
+        const dijkstraRoute: RouteData = {
+            id: `dijkstra-aqi-${Date.now()}`,
+            name: 'Cleanest Air Path',
+            algorithm: "Dijkstra's Algorithm (AQI-weighted)",
+            duration: `${Math.round(dijkstraDistance * 12)} min`,
+            distance: `${dijkstraDistance.toFixed(1)} km`,
+            pollutionScore: Math.round(dijkstraDistance * 14),
+            inhaledDose: Math.round(dijkstraDistance * 30),
+            color: '#22c55e',
+            visible: true,
+            isRecommended: true,
+            coordinates: dijkstraCoords,
+        };
+
+        const allRoutes = [...pythonRoutes, ...tomTomRoutes, dijkstraRoute];
+
+        return allRoutes.map(r => r);
 
     } catch (error) {
         console.error('Error fetching routes:', error);
