@@ -6,153 +6,149 @@
 
 @layer base {
   :root {
-    /* Clean Air Theme - Fresh & Health-Focused */
-    --background: 200 20% 98%;
-    --foreground: 200 25% 10%;
+    /* PureWay — Black & White Glass Dark Theme */
+    --background: 0 0% 4%;
+    --foreground: 0 0% 96%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 200 25% 10%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 96%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 200 25% 10%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 96%;
 
-    /* Primary - Fresh Teal (Clean Air) */
-    --primary: 168 76% 36%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 0%;
 
-    /* Secondary - Soft Blue Sky */
-    --secondary: 199 89% 48%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 0 0% 60%;
+    --secondary-foreground: 0 0% 96%;
 
-    --muted: 200 20% 94%;
-    --muted-foreground: 200 15% 45%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 50%;
 
-    --accent: 168 60% 94%;
-    --accent-foreground: 168 76% 26%;
+    --accent: 0 0% 14%;
+    --accent-foreground: 0 0% 90%;
 
-    /* Pollution Scale */
-    --pollution-low: 142 71% 45%;
-    --pollution-moderate: 45 93% 47%;
-    --pollution-high: 25 95% 53%;
-    --pollution-severe: 0 84% 60%;
+    /* Pollution Scale — subtle tints on monochrome */
+    --pollution-low: 142 60% 55%;
+    --pollution-moderate: 45 90% 55%;
+    --pollution-high: 0 80% 60%;
+    --pollution-severe: 0 84% 45%;
 
-    /* Health Positive */
-    --health-good: 142 71% 45%;
-    --health-warning: 45 93% 47%;
-    --health-danger: 0 84% 60%;
+    --health-good: 142 60% 55%;
+    --health-warning: 45 90% 55%;
+    --health-danger: 0 80% 60%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 70% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 200 20% 88%;
-    --input: 200 20% 88%;
-    --ring: 168 76% 36%;
+    --border: 0 0% 16%;
+    --input: 0 0% 14%;
+    --ring: 0 0% 80%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
-    /* Glass Effect */
-    --glass-bg: 0 0% 100% / 0.8;
-    --glass-border: 0 0% 100% / 0.3;
+    /* Liquid Glass */
+    --glass-bg: 0 0% 100% / 0.05;
+    --glass-border: 0 0% 100% / 0.1;
+    --glass-blur: 24px;
 
-    /* Gradients */
-    --gradient-clean: linear-gradient(135deg, hsl(168, 76%, 36%), hsl(199, 89%, 48%));
-    --gradient-polluted: linear-gradient(135deg, hsl(25, 95%, 53%), hsl(0, 84%, 60%));
-    --gradient-hero: linear-gradient(180deg, hsl(200, 20%, 98%) 0%, hsl(168, 60%, 96%) 100%);
-    --gradient-card: linear-gradient(135deg, hsl(0, 0%, 100%) 0%, hsl(200, 20%, 98%) 100%);
+    /* Gradients — monochrome */
+    --gradient-clean: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+    --gradient-polluted: linear-gradient(135deg, hsl(25, 80%, 50%), hsl(0, 80%, 50%));
+    --gradient-hero: linear-gradient(180deg, hsl(0,0%,4%) 0%, hsl(0,0%,6%) 100%);
+    --gradient-card: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 100%);
 
-    /* Shadows */
-    --shadow-sm: 0 2px 8px -2px hsl(200 25% 10% / 0.08);
-    --shadow-md: 0 8px 24px -4px hsl(200 25% 10% / 0.12);
-    --shadow-lg: 0 16px 48px -8px hsl(200 25% 10% / 0.16);
-    --shadow-glow: 0 0 40px -10px hsl(168 76% 36% / 0.4);
+    --shadow-sm: 0 2px 8px -2px rgba(0,0,0,0.6);
+    --shadow-md: 0 8px 32px -4px rgba(0,0,0,0.7);
+    --shadow-lg: 0 16px 64px -8px rgba(0,0,0,0.8);
+    --shadow-glow: 0 0 40px -10px rgba(255,255,255,0.15);
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 0 0% 6%;
+    --sidebar-foreground: 0 0% 90%;
+    --sidebar-primary: 0 0% 96%;
+    --sidebar-primary-foreground: 0 0% 4%;
+    --sidebar-accent: 0 0% 12%;
+    --sidebar-accent-foreground: 0 0% 90%;
+    --sidebar-border: 0 0% 14%;
+    --sidebar-ring: 0 0% 60%;
   }
 
+  /* Always dark */
   .dark {
-    --background: 200 25% 8%;
-    --foreground: 200 10% 95%;
-
-    --card: 200 25% 12%;
-    --card-foreground: 200 10% 95%;
-
-    --popover: 200 25% 12%;
-    --popover-foreground: 200 10% 95%;
-
-    --primary: 168 76% 45%;
-    --primary-foreground: 200 25% 8%;
-
-    --secondary: 199 70% 50%;
-    --secondary-foreground: 200 25% 8%;
-
-    --muted: 200 20% 18%;
-    --muted-foreground: 200 15% 60%;
-
-    --accent: 168 40% 20%;
-    --accent-foreground: 168 76% 65%;
-
-    --destructive: 0 62% 50%;
+    --background: 0 0% 4%;
+    --foreground: 0 0% 96%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 96%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 0 0% 60%;
+    --secondary-foreground: 0 0% 96%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 50%;
+    --accent: 0 0% 14%;
+    --accent-foreground: 0 0% 90%;
+    --destructive: 0 70% 55%;
     --destructive-foreground: 0 0% 100%;
-
-    --border: 200 20% 20%;
-    --input: 200 20% 20%;
-    --ring: 168 76% 45%;
-
-    --glass-bg: 200 25% 12% / 0.9;
-    --glass-border: 200 20% 30% / 0.5;
-
-    --gradient-hero: linear-gradient(180deg, hsl(200, 25%, 8%) 0%, hsl(200, 25%, 12%) 100%);
-    --gradient-card: linear-gradient(135deg, hsl(200, 25%, 14%) 0%, hsl(200, 25%, 10%) 100%);
-
-    --shadow-sm: 0 2px 8px -2px hsl(0 0% 0% / 0.3);
-    --shadow-md: 0 8px 24px -4px hsl(0 0% 0% / 0.4);
-    --shadow-lg: 0 16px 48px -8px hsl(0 0% 0% / 0.5);
-    --shadow-glow: 0 0 40px -10px hsl(168 76% 45% / 0.3);
-
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 0 0% 16%;
+    --input: 0 0% 14%;
+    --ring: 0 0% 80%;
+    --glass-bg: 0 0% 100% / 0.05;
+    --glass-border: 0 0% 100% / 0.1;
+    --gradient-clean: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+    --shadow-glow: 0 0 40px -10px rgba(255,255,255,0.15);
+    --sidebar-background: 0 0% 6%;
+    --sidebar-foreground: 0 0% 90%;
+    --sidebar-primary: 0 0% 96%;
+    --sidebar-primary-foreground: 0 0% 4%;
+    --sidebar-accent: 0 0% 12%;
+    --sidebar-accent-foreground: 0 0% 90%;
+    --sidebar-border: 0 0% 14%;
+    --sidebar-ring: 0 0% 60%;
   }
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
+  * { @apply border-border; }
+
+  html { color-scheme: dark; }
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Inter', sans-serif;
+    background-color: #0a0a0a;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+  h1, h2, h3, h4, h5, h6 {
     font-family: 'Space Grotesk', sans-serif;
   }
 }
 
 @layer components {
+  /* Liquid Glass panel */
   .glass-panel {
-    @apply backdrop-blur-xl border rounded-xl;
-    background: hsl(var(--glass-bg));
-    border-color: hsl(var(--glass-border));
-    box-shadow: var(--shadow-md);
+    backdrop-filter: blur(var(--glass-blur, 24px)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--glass-blur, 24px)) saturate(180%);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  /* Stronger glass for cards */
+  .glass-card {
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius);
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.2);
   }
 
   .gradient-clean {
@@ -164,7 +160,7 @@
   }
 
   .text-gradient-clean {
-    background: var(--gradient-clean);
+    background: linear-gradient(135deg, #ffffff, #9ca3af);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -174,27 +170,38 @@
     box-shadow: var(--shadow-glow);
   }
 
+  /* White glow for logo */
+  .glow-white {
+    box-shadow: 0 0 20px rgba(255,255,255,0.2), 0 0 60px rgba(255,255,255,0.05);
+  }
+
   .animate-pulse-slow {
     animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
-  .route-line-clean {
-    stroke: hsl(var(--pollution-low));
-    stroke-width: 4;
-    stroke-linecap: round;
+  .animate-breathe {
+    animation: breathe 4s ease-in-out infinite;
   }
 
-  .route-line-moderate {
-    stroke: hsl(var(--pollution-moderate));
-    stroke-width: 4;
-    stroke-linecap: round;
+  .animate-pulse-glow {
+    animation: pulseGlow 3s ease-in-out infinite;
   }
 
-  .route-line-polluted {
-    stroke: hsl(var(--pollution-high));
-    stroke-width: 4;
-    stroke-linecap: round;
-  }
+  /* Pollution color classes — kept for map compatibility */
+  .text-pollution-low    { color: hsl(var(--pollution-low)); }
+  .text-pollution-moderate { color: hsl(var(--pollution-moderate)); }
+  .text-pollution-high   { color: hsl(var(--pollution-high)); }
+  .bg-pollution-low\/10  { background: hsl(var(--pollution-low) / 0.1); }
+  .bg-pollution-moderate\/10 { background: hsl(var(--pollution-moderate) / 0.1); }
+  .bg-pollution-high\/10 { background: hsl(var(--pollution-high) / 0.1); }
+  .border-pollution-low\/30  { border-color: hsl(var(--pollution-low) / 0.3); }
+  .border-pollution-moderate\/30 { border-color: hsl(var(--pollution-moderate) / 0.3); }
+  .border-pollution-high\/30 { border-color: hsl(var(--pollution-high) / 0.3); }
+  .bg-health-good  { background: hsl(var(--health-good)); }
+
+  .route-line-clean    { stroke: hsl(var(--pollution-low)); stroke-width: 4; stroke-linecap: round; }
+  .route-line-moderate { stroke: hsl(var(--pollution-moderate)); stroke-width: 4; stroke-linecap: round; }
+  .route-line-polluted { stroke: hsl(var(--pollution-high)); stroke-width: 4; stroke-linecap: round; }
 }
 
 @layer utilities {
@@ -202,18 +209,22 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
 }
 
-/* Leaflet custom marker styles */
-.custom-marker {
-  background: transparent !important;
-  border: none !important;
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.9; }
 }
 
-.leaflet-container {
-  font-family: inherit;
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
 }
+
+/* Leaflet */
+.custom-marker { background: transparent !important; border: none !important; }
+.leaflet-container { font-family: inherit; }
+
+/* Leaflet tiles — dark filter */
+.leaflet-tile { filter: brightness(0.7) contrast(1.1) saturate(0.6); }

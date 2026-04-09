@@ -24,7 +24,7 @@ const ActivityHistory = () => {
                     <Info className="w-3.5 h-3.5 text-muted-foreground" />
                     <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-tight">How it works</span>
                     <div className="absolute top-8 right-0 w-64 p-3 bg-popover text-popover-foreground rounded-xl border border-border shadow-xl text-xs opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-50">
-                        BreatheWay tracks your inhaled dose based on the PM2.5 levels of your routes. "Pollution Saved" is the difference between the most polluted route and the clean one you chose.
+                        PureWay tracks your inhaled dose based on the PM2.5 levels of your routes. "Pollution Saved" is the difference between the most polluted route and the clean one you chose.
                     </div>
                 </div>
             </div>

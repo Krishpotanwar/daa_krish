@@ -7,8 +7,8 @@
  * Bellman-Ford relaxes all edges V-1 times, allowing negative-weight edges,
  * running in O(VE).
  *
- * Real-world use in BreatheWay:
- * Given any two GPS coordinates on Earth, BreatheWay samples real-time AQI
+ * Real-world use in PureWay:
+ * Given any two GPS coordinates on Earth, PureWay samples real-time AQI
  * data along the route, builds a dynamic weighted graph, and runs Dijkstra
  * to find the path that minimises total pollution exposure.
  * Works for any city/location — not hardcoded to any region.

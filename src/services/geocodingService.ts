@@ -12,7 +12,7 @@ export interface GeocodeResult {
 const NOMINATIM = 'https://nominatim.openstreetmap.org';
 const HEADERS = {
     'Accept-Language': 'en',
-    'User-Agent': 'BreatheWay-DAA-App/1.0 (daakrish.vercel.app)',
+    'User-Agent': 'PureWay-DAA-App/1.0 (daakrish.vercel.app)',
 };
 
 /** Format a Nominatim result into a short, readable label */

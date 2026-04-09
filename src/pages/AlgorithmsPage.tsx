@@ -27,7 +27,7 @@ const algorithms = [
     altComplexity: `Bellman-Ford: ${BELLMAN_FORD_COMPLEXITY} / ${BELLMAN_FORD_SPACE}`,
     description:
       'Finds the minimum-cost path from a source node to all other nodes ' +
-      'using a greedy min-priority-queue. Edge weights in BreatheWay combine ' +
+      'using a greedy min-priority-queue. Edge weights in PureWay combine ' +
       'physical distance and AQI penalty — so the algorithm naturally avoids ' +
       'polluted corridors.',
     use: 'Powers the "Cleanest Air Path" route card. The Delhi city graph has 7 nodes ' +
@@ -77,7 +77,7 @@ const algorithms = [
       'Splits the point set at the median x-coordinate, recursively finds ' +
       'the closest pair in each half, then checks the strip of width 2δ ' +
       'around the dividing line. Overall O(n log² n) vs naïve O(n²).',
-    use: 'For every GPS coordinate along a route, BreatheWay snaps it to the ' +
+    use: 'For every GPS coordinate along a route, PureWay snaps it to the ' +
       'nearest CPCB pollution monitoring station using this algorithm. This ' +
       'ensures AQI readings come from real sensors, not arbitrary map coords.',
     table: {
@@ -95,21 +95,22 @@ const algorithms = [
 
 export default function AlgorithmsPage() {
   return (
-    <div className="min-h-screen bg-background py-8 px-4">
+    <div className="min-h-screen py-8 px-4" style={{ background: '#0a0a0a', color: '#f5f5f5' }}>
       {/* Header */}
       <div className="max-w-5xl mx-auto mb-8">
         <Link
           to="/app"
-          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
+          className="inline-flex items-center gap-2 text-sm mb-4 transition-colors"
+          style={{ color: 'rgba(255,255,255,0.4)' }}
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Map
         </Link>
-        <h1 className="text-3xl font-bold text-foreground mb-1">Algorithms Used</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-3xl font-bold mb-1">Algorithms Used</h1>
+        <p style={{ color: 'rgba(255,255,255,0.4)' }}>
           DAA Lab Project — 24CS03TH0402 | RBU Nagpur, B.Tech CSE, Sem IV
         </p>
-        <p className="text-sm text-muted-foreground mt-1">
+        <p className="text-sm mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>
           Units II, III &amp; IV of the Design and Analysis of Algorithms syllabus,
           applied to real-world air-quality-aware navigation.
         </p>
@@ -118,14 +119,25 @@ export default function AlgorithmsPage() {
       {/* Cards */}
       <div className="max-w-5xl mx-auto space-y-6">
         {algorithms.map((algo) => (
-          <Card key={algo.name} className={`border ${algo.color}`}>
+          <Card key={algo.name}
+            style={{
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              background: 'rgba(255,255,255,0.05)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+              color: '#f5f5f5',
+            }}
+          >
             <CardHeader className="pb-2">
               <div className="flex flex-wrap items-start gap-3 justify-between">
                 <div>
-                  <CardTitle className="text-xl">{algo.name}</CardTitle>
-                  <p className="text-sm text-muted-foreground">{algo.subtitle}</p>
+                  <CardTitle className="text-xl text-white">{algo.name}</CardTitle>
+                  <p className="text-sm" style={{ color: 'rgba(255,255,255,0.4)' }}>{algo.subtitle}</p>
                 </div>
-                <Badge className={`${algo.badgeColor} shrink-0`}>
+                <Badge className="shrink-0 text-white"
+                  style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.15)' }}
+                >
                   {algo.unit} — {algo.unitLabel}
                 </Badge>
               </div>
@@ -135,12 +147,14 @@ export default function AlgorithmsPage() {
               {/* Complexity row */}
               <div className="flex flex-wrap gap-4 text-sm">
                 <span>
-                  <span className="font-semibold">Time: </span>
-                  <code className="bg-muted px-1 rounded">{algo.complexity}</code>
+                  <span className="font-semibold text-white/70">Time: </span>
+                  <code className="px-1.5 py-0.5 rounded text-xs text-white/80"
+                    style={{ background: 'rgba(255,255,255,0.08)' }}>{algo.complexity}</code>
                 </span>
                 <span>
-                  <span className="font-semibold">Space: </span>
-                  <code className="bg-muted px-1 rounded">{algo.space}</code>
+                  <span className="font-semibold text-white/70">Space: </span>
+                  <code className="px-1.5 py-0.5 rounded text-xs text-white/80"
+                    style={{ background: 'rgba(255,255,255,0.08)' }}>{algo.space}</code>
                 </span>
                 {algo.altComplexity && (
                   <span className="text-muted-foreground">{algo.altComplexity}</span>
@@ -151,20 +165,22 @@ export default function AlgorithmsPage() {
               <p className="text-sm text-foreground/80">{algo.description}</p>
 
               {/* Real-world use */}
-              <div className="bg-muted/40 rounded-lg p-3">
-                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1">
-                  How it's used in BreatheWay
+              <div className="rounded-lg p-3" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <p className="text-xs font-semibold uppercase tracking-widest mb-1.5"
+                  style={{ color: 'rgba(255,255,255,0.3)' }}>
+                  How it's used in PureWay
                 </p>
-                <p className="text-sm">{algo.use}</p>
+                <p className="text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>{algo.use}</p>
               </div>
 
               {/* Static data table */}
               <div className="overflow-x-auto">
                 <table className="w-full text-sm border-collapse">
                   <thead>
-                    <tr className="border-b border-border">
+                    <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
                       {algo.table.headers.map((h) => (
-                        <th key={h} className="text-left py-1 px-2 text-muted-foreground font-medium">
+                        <th key={h} className="text-left py-1.5 px-2 text-xs font-medium"
+                          style={{ color: 'rgba(255,255,255,0.35)' }}>
                           {h}
                         </th>
                       ))}
@@ -172,9 +188,10 @@ export default function AlgorithmsPage() {
                   </thead>
                   <tbody>
                     {algo.table.rows.map((row, i) => (
-                      <tr key={i} className="border-b border-border/50 hover:bg-muted/30">
+                      <tr key={i} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+                        className="hover:bg-white/5 transition-colors">
                         {row.map((cell, j) => (
-                          <td key={j} className="py-1 px-2">
+                          <td key={j} className="py-1.5 px-2 text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>
                             {cell}
                           </td>
                         ))}

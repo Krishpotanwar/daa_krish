@@ -9,7 +9,7 @@
  * points can exist in a δ × 2δ rectangle with min distance δ.
  * Overall: T(n) = 2T(n/2) + O(n log n) → O(n log² n), typically cited O(n log n).
  *
- * Real-world use in BreatheWay:
+ * Real-world use in PureWay:
  * Pollution monitoring stations are scattered across the city. Given any
  * GPS point on a computed route, `closestPollutionStation()` finds which
  * monitoring station is geographically nearest. This drives the pollution
@@ -144,7 +144,7 @@ export function closestPair(points: Point[]): ClosestPairResult {
  * Given a single GPS point on a route, finds the nearest pollution
  * monitoring station using the O(n log n) closest-pair approach.
  *
- * In BreatheWay this is called per route-segment to snap AQI queries
+ * In PureWay this is called per route-segment to snap AQI queries
  * to the nearest real sensor rather than querying arbitrary coordinates.
  *
  * @param routePoint  A lat/lng point along the computed route

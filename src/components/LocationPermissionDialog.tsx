@@ -31,7 +31,7 @@ const LocationPermissionDialog = ({ open, onClose, onRetry }: LocationPermission
                     'Scroll down and tap "Safari"',
                     'Tap "Location"',
                     'Select "Ask" or "Allow"',
-                    'Return to BreatheWay and try again'
+                    'Return to PureWay and try again'
                 ],
                 note: 'You may need to reload the page after changing settings.'
             };
@@ -44,7 +44,7 @@ const LocationPermissionDialog = ({ open, onClose, onRetry }: LocationPermission
                     'Tap "Site Settings"',
                     'Tap "Location"',
                     'Find this website and set to "Allow"',
-                    'Return to BreatheWay and try again'
+                    'Return to PureWay and try again'
                 ],
                 note: 'Make sure Location is enabled in your device settings too.'
             };

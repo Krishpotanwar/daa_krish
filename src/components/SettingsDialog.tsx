@@ -91,7 +91,7 @@ const SettingsDialog = () => {
                 </div>
             </div>
             <div className="p-4 border-t border-border/50 bg-muted/20 text-center">
-                <p className="text-[10px] text-muted-foreground">Version 1.0.2 • BreatheWay Inc.</p>
+                <p className="text-[10px] text-muted-foreground">Version 1.0.2 • PureWay Inc.</p>
             </div>
         </DialogContent>
     );

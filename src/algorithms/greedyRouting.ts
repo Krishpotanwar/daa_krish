@@ -9,7 +9,7 @@
  * pick the next non-overlapping segment with the lowest AQI penalty.
  * This runs in O(n log n) dominated by the sort step.
  *
- * Real-world use in BreatheWay:
+ * Real-world use in PureWay:
  * A long route can be divided into road segments that overlap (e.g. one
  * segment might cut through an intersection covered by multiple readings).
  * The greedy selector picks a non-overlapping subset of segments that
