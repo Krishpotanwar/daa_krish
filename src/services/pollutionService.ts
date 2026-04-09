@@ -7,22 +7,16 @@ export interface PollutionData {
 
 export const getPollutionData = async (lat: number, lon: number): Promise<PollutionData | null> => {
     try {
-        // Open-Meteo Air Quality API
-        // Fetching current conditions (using hourly[0] as an approximation for "now" or closest hour)
-        const url = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&current=us_aqi,pm2_5,nitrogen_dioxide,ozone&timezone=auto`;
-
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Pollution data fetch failed');
-
-        const data = await response.json();
-
-        if (!data.current) return null;
-
+        // Python backend proxy — uses WAQI (real sensor data) with Open-Meteo fallback.
+        // API key stays server-side; browser never sees WAQI_TOKEN.
+        const res = await fetch(`/api/pollution?lat=${lat}&lon=${lon}`);
+        if (!res.ok) return null;
+        const d = await res.json();
         return {
-            aqi: data.current.us_aqi || 0,
-            pm2_5: data.current.pm2_5 || 0,
-            no2: data.current.nitrogen_dioxide || 0,
-            o3: data.current.ozone || 0
+            aqi:   d.aqi   ?? 50,
+            pm2_5: d.pm25  ?? 15,
+            no2:   d.no2   ?? 10,
+            o3:    d.o3    ?? 20,
         };
     } catch (error) {
         console.warn('Error fetching pollution data:', error);

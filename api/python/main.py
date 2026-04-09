@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel
 from typing import List, Tuple, Optional
 try:
@@ -7,6 +7,10 @@ except ImportError:
     from api.python import pathfinding
 from fastapi.middleware.cors import CORSMiddleware
 import random
+import os
+import heapq
+import urllib.request
+import urllib.parse
 
 app = FastAPI(title="PureWay Pathfinding API")
 
@@ -318,6 +322,192 @@ def run_closest_pair(request: _Opt[ClosestPairRequest] = None):
             "distance": round(pair_dist, 6),
         },
         "all_stations": stations,
+    }
+
+
+# ===========================================================================
+# NEW: /routes and /pollution — Python-first API (TomTom + WAQI)
+# These mirror the Vercel serverless functions in /api/routes.py and
+# /api/pollution.py so local FastAPI dev works identically to production.
+# ===========================================================================
+
+import json as _json
+_TOMTOM_KEY = os.environ.get("TOMTOM_API_KEY", "")
+_WAQI_TOKEN = os.environ.get("WAQI_TOKEN", "")
+
+
+def _fetch_json_local(url: str, timeout: int = 8):
+    try:
+        with urllib.request.urlopen(url, timeout=timeout) as r:
+            return _json.loads(r.read())
+    except Exception:
+        return None
+
+
+def _get_aqi_local(lat: float, lon: float) -> int:
+    if _WAQI_TOKEN:
+        data = _fetch_json_local(
+            f"https://api.waqi.info/feed/geo:{lat};{lon}/?token={_WAQI_TOKEN}"
+        )
+        if data and data.get("status") == "ok":
+            aqi = data["data"].get("aqi", 0)
+            if isinstance(aqi, (int, float)):
+                return int(aqi)
+    params = urllib.parse.urlencode({
+        "latitude": lat, "longitude": lon,
+        "current": "us_aqi", "timezone": "auto",
+    })
+    data = _fetch_json_local(
+        f"https://air-quality-api.open-meteo.com/v1/air-quality?{params}"
+    )
+    if data and data.get("current"):
+        return int(data["current"].get("us_aqi", 50))
+    return 50
+
+
+def _dijkstra_rank_local(aqi_scores: list) -> list:
+    n = len(aqi_scores)
+    dist = list(aqi_scores)
+    pq = [(aqi_scores[i], i) for i in range(n)]
+    heapq.heapify(pq)
+    visited, order = set(), []
+    while pq:
+        d, u = heapq.heappop(pq)
+        if u in visited:
+            continue
+        visited.add(u)
+        order.append(u)
+        for v in range(n):
+            if v not in visited:
+                w = (aqi_scores[u] + aqi_scores[v]) / 2
+                if d + w < dist[v]:
+                    dist[v] = d + w
+                    heapq.heappush(pq, (dist[v], v))
+    return order
+
+
+def _greedy_best_local(routes: list) -> int:
+    best_idx, best_ratio = 0, float('inf')
+    for i, r in enumerate(routes):
+        dist_km = r["distance_m"] / 1000
+        ratio = r["aqi"] / dist_km if dist_km > 0 else float('inf')
+        if ratio < best_ratio:
+            best_ratio, best_idx = ratio, i
+    return best_idx
+
+
+_ROUTE_META = [
+    {"id": "fastest",  "name": "Fastest Route",    "color": "#2563eb"},
+    {"id": "shortest", "name": "Shortest Route",    "color": "#7c3aed"},
+    {"id": "scenic",   "name": "Alternative Route", "color": "#d97706"},
+]
+
+
+class RoutesRequest(BaseModel):
+    start: dict   # {"lat": float, "lon": float}
+    end: dict
+    mode: Optional[str] = "pedestrian"
+
+
+@app.post("/routes")
+def run_routes(request: RoutesRequest):
+    """TomTom routing + Dijkstra/Greedy DAA scoring (Units II & III)"""
+    if not _TOMTOM_KEY:
+        raise HTTPException(status_code=503, detail="TOMTOM_API_KEY not configured")
+
+    s, e = request.start, request.end
+    travel_mode = "bicycle" if request.mode == "cyclist" else "pedestrian"
+    coords = f"{s['lat']},{s['lon']}:{e['lat']},{e['lon']}"
+    params = urllib.parse.urlencode({
+        "key": _TOMTOM_KEY, "maxAlternatives": 2,
+        "travelMode": travel_mode, "traffic": "true", "routeType": "fastest",
+    })
+    url = f"https://api.tomtom.com/routing/1/calculateRoute/{coords}/json?{params}"
+    data = _fetch_json_local(url)
+    if not data or "routes" not in data:
+        raise HTTPException(status_code=502, detail="TomTom returned no routes")
+
+    route_data = []
+    for rt in data["routes"][:3]:
+        summary = rt.get("summary", {})
+        points = rt.get("legs", [{}])[0].get("points", [])
+        if not points:
+            continue
+        mid = points[len(points) // 2]
+        aqi = _get_aqi_local(mid["latitude"], mid["longitude"])
+        route_data.append({
+            "points": points,
+            "aqi": aqi,
+            "duration_s": summary.get("travelTimeInSeconds", 0),
+            "distance_m": summary.get("lengthInMeters", 0),
+        })
+
+    if not route_data:
+        raise HTTPException(status_code=502, detail="No usable routes returned")
+
+    aqi_scores = [r["aqi"] for r in route_data]
+    dijk_order = _dijkstra_rank_local(aqi_scores)
+    greedy_win = _greedy_best_local(route_data)
+
+    result = []
+    for pos, ri in enumerate(dijk_order):
+        r = route_data[ri]
+        meta = _ROUTE_META[ri] if ri < len(_ROUTE_META) else _ROUTE_META[-1]
+        if pos == 0:
+            name, algo, color, rec = "Cleanest Air Path", "Dijkstra (AQI-weighted, Python)", "#22c55e", True
+        elif ri == greedy_win:
+            name, algo, color, rec = "Optimal Exposure", "Greedy Selection (Python)", "#f97316", False
+        else:
+            name, algo, color, rec = meta["name"], "TomTom Traffic-Aware", meta["color"], False
+        result.append({
+            "id": f"{meta['id']}-{ri}",
+            "name": name, "algorithm": algo, "color": color,
+            "duration": f"{round(r['duration_s']/60)} min",
+            "distance": f"{r['distance_m']/1000:.1f} km",
+            "pollutionScore": r["aqi"],
+            "inhaledDose": round(r["aqi"] * (r["duration_s"] / 60) * 0.014),
+            "visible": True, "isRecommended": rec,
+            "coordinates": [[p["latitude"], p["longitude"]] for p in r["points"]],
+        })
+    return result
+
+
+@app.get("/pollution")
+def run_pollution(lat: float = Query(28.6315), lon: float = Query(77.2167)):
+    """WAQI pollution proxy with Open-Meteo fallback (Unit IV closest-pair demo)"""
+    if _WAQI_TOKEN:
+        data = _fetch_json_local(
+            f"https://api.waqi.info/feed/geo:{lat};{lon}/?token={_WAQI_TOKEN}"
+        )
+        if data and data.get("status") == "ok":
+            d = data["data"]
+            iaqi = d.get("iaqi", {})
+            return {
+                "aqi": d.get("aqi", 0),
+                "pm25": iaqi.get("pm25", {}).get("v", 0),
+                "pm10": iaqi.get("pm10", {}).get("v", 0),
+                "no2": iaqi.get("no2", {}).get("v", 0),
+                "o3": iaqi.get("o3", {}).get("v", 0),
+                "station": d.get("city", {}).get("name", "Unknown"),
+                "source": "waqi",
+            }
+    # Fallback
+    params = urllib.parse.urlencode({
+        "latitude": lat, "longitude": lon,
+        "current": "us_aqi,pm2_5,nitrogen_dioxide,ozone", "timezone": "auto",
+    })
+    data = _fetch_json_local(
+        f"https://air-quality-api.open-meteo.com/v1/air-quality?{params}"
+    )
+    cur = data.get("current", {}) if data else {}
+    return {
+        "aqi": cur.get("us_aqi", 50),
+        "pm25": cur.get("pm2_5", 15),
+        "pm10": 0,
+        "no2": cur.get("nitrogen_dioxide", 10),
+        "o3": cur.get("ozone", 20),
+        "station": "Open-Meteo (fallback)",
+        "source": "open-meteo",
     }
 
 
