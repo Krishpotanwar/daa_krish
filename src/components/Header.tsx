@@ -1,4 +1,5 @@
-import { Wind, HeartPulse } from 'lucide-react';
+import { Wind, HeartPulse, FlaskConical } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import ProfileMenu from './ProfileMenu';
 
 const Header = ({ aqi = 42, status = 'Good' }: { aqi?: number, status?: string }) => {
@@ -39,6 +40,15 @@ const Header = ({ aqi = 42, status = 'Good' }: { aqi?: number, status?: string }
             <span className={`text-xs font-medium ${aqiInfo.color}`}>AQI {aqi}</span>
             <span className="text-xs text-muted-foreground">• {status}</span>
           </div>
+
+          {/* Algorithms nav link */}
+          <Link
+            to="/algorithms"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <FlaskConical className="w-3.5 h-3.5" />
+            Algorithms
+          </Link>
 
           <button
             className="p-2 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
