@@ -4,7 +4,11 @@ export interface GeocodeResult {
     display_name: string;
 }
 
-const TOMTOM_API_KEY = import.meta.env.VITE_TOMTOM_API_KEY;
+/**
+ * Nominatim OpenStreetMap geocoding — completely free, no API key needed.
+ * Works for any location worldwide.
+ */
+const NOMINATIM = 'https://nominatim.openstreetmap.org';
 
 export const searchLocation = async (query: string): Promise<GeocodeResult | null> => {
     try {
@@ -18,31 +22,22 @@ export const searchLocation = async (query: string): Promise<GeocodeResult | nul
 
 export const getSuggestions = async (query: string): Promise<GeocodeResult[]> => {
     try {
-        if (!TOMTOM_API_KEY) {
-            throw new Error('TomTom API Key is missing');
-        }
+        const url = `${NOMINATIM}/search?q=${encodeURIComponent(query)}&format=json&limit=5&addressdetails=1`;
+        const response = await fetch(url, {
+            headers: { 'Accept-Language': 'en' }
+        });
 
-        const response = await fetch(
-            `https://api.tomtom.com/search/2/search/${encodeURIComponent(query)}.json?key=${TOMTOM_API_KEY}&limit=5&idxSet=POI,Str,Geo&typeahead=true`
-        );
-
-        if (!response.ok) {
-            throw new Error('Geocoding failed');
-        }
+        if (!response.ok) throw new Error('Geocoding failed');
 
         const data = await response.json();
 
-        if (data.results && data.results.length > 0) {
-            return data.results.map((result: any) => ({
-                lat: result.position.lat,
-                lon: result.position.lon,
-                display_name: result.poi && result.poi.name
-                    ? `${result.poi.name}, ${result.address.freeformAddress}`
-                    : result.address.freeformAddress
-            }));
-        }
+        if (!Array.isArray(data) || data.length === 0) return [];
 
-        return [];
+        return data.map((result: any) => ({
+            lat: parseFloat(result.lat),
+            lon: parseFloat(result.lon),
+            display_name: result.display_name,
+        }));
     } catch (error) {
         console.error('Error getting suggestions:', error);
         return [];
@@ -51,28 +46,17 @@ export const getSuggestions = async (query: string): Promise<GeocodeResult[]> =>
 
 export const reverseGeocode = async (lat: number, lon: number): Promise<string | null> => {
     try {
-        if (!TOMTOM_API_KEY) {
-            throw new Error('TomTom API Key is missing');
-        }
+        const url = `${NOMINATIM}/reverse?lat=${lat}&lon=${lon}&format=json`;
+        const response = await fetch(url, {
+            headers: { 'Accept-Language': 'en' }
+        });
 
-        const response = await fetch(
-            `https://api.tomtom.com/search/2/reverseGeocode/${lat},${lon}.json?key=${TOMTOM_API_KEY}`
-        );
-
-        if (!response.ok) {
-            throw new Error('Reverse geocoding failed');
-        }
+        if (!response.ok) throw new Error('Reverse geocoding failed');
 
         const data = await response.json();
-
-        if (data.addresses && data.addresses.length > 0) {
-            return data.addresses[0].address.freeformAddress;
-        }
-
-        return null;
+        return data.display_name ?? null;
     } catch (error) {
         console.error('Error reverse geocoding:', error);
         return null;
     }
 };
-
